@@ -1,0 +1,190 @@
+<!DOCTYPE html> <!-- Define que o documento é HTML5 -->
+<html lang="pt-BR"> <!-- Define que a página está em português do Brasil -->
+<head>
+  <meta charset="UTF-8"> <!-- Permite caracteres especiais como ç e acentos -->
+  <title>Prática 12 - Exercícios</title> <!-- Título da aba do navegador -->
+  <style>
+    /* Estilo da página */
+    body {
+      font-family: "Times New Roman", serif; /* Fonte usada no texto */
+      margin: 20px;                   /* Espaço ao redor do corpo */
+      background: black;            /* Cor de fundo preto */
+    }
+    h2 {
+      color: white; /* Cor dos títulos */
+    }
+    input, button {
+      margin: 5px;   /* Espaço externo */
+      padding: 5px;  /* Espaço interno */
+    }
+    pre {
+      background: #fff;              /* Fundo branco */
+      padding: 10px;                 /* Espaço interno */
+      border: 1px solid #ccc;        /* Borda fina cinza */
+      white-space: pre-wrap;         /* Mantém quebras de linha */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- EXERCÍCIO 1 -->
+  <h2>1) Número Natural</h2>
+  <input type="number" id="numero" placeholder="Digite um número natural"> <!-- Caixa para digitar um número -->
+  <button onclick="exercicio1()">Executar</button> <!-- Botão que chama a função exercicio1 -->
+  <pre id="saida1"></pre> <!-- Local onde o resultado será exibido -->
+
+  <!-- EXERCÍCIO 2 -->
+  <h2>2) Vetor de 10 posições</h2>
+  <input type="text" id="vetor" placeholder="Digite 10 números separados por vírgula"> <!-- Caixa para digitar 10 números -->
+  <button onclick="exercicio2()">Executar</button> <!-- Botão que chama a função exercicio2 -->
+  <pre id="saida2"></pre> <!-- Local onde o resultado será exibido -->
+
+  <!-- EXERCÍCIO 3 -->
+  <h2>3) Matriz 3x3</h2>
+  <input type="text" id="matriz" placeholder="Digite 9 números separados por vírgula"> <!-- Caixa para digitar 9 números -->
+  <button onclick="exercicio3()">Executar</button> <!-- Botão que chama a função exercicio3 -->
+  <pre id="saida3"></pre> <!-- Local onde o resultado será exibido -->
+
+  <script>
+    // ================= EXERCÍCIO 1 =================
+
+    // Função que retorna todos os números ímpares até n
+    function imprimirImpares(n) {
+      let impares = []; // cria um array vazio
+      for (let i = 1; i <= n; i++) { // laço de 1 até n
+        if (i % 2 !== 0) impares.push(i); // se o número é ímpar, adiciona no array
+      }
+      return impares.join(", "); // transforma o array em string separada por vírgula
+    }
+
+    // Função que verifica se o número é par ou ímpar
+    function verificarParidade(n) {
+      return (n % 2 === 0) ? "Par" : "Ímpar"; // operador ternário: retorna "Par" ou "Ímpar"
+    }
+
+    // Função principal do exercício 1
+    function exercicio1() {
+      // Pega o valor digitado no input e transforma em inteiro
+      let n = parseInt(document.getElementById("numero").value);
+
+      // Verifica se é número válido e maior ou igual a 0
+      if (isNaN(n) || n < 0) {
+        document.getElementById("saida1").innerText = "Digite um número natural válido!";
+        return; // interrompe a função
+      }
+
+      // Cria a saída final com os ímpares e a paridade
+      let saida = "Ímpares até " + n + ": " + imprimirImpares(n) + "\n";
+      saida += "O número " + n + " é: " + verificarParidade(n);
+
+      // Mostra o resultado no <pre id="saida1">
+      document.getElementById("saida1").innerText = saida;
+    }
+
+    // ================= EXERCÍCIO 2 =================
+
+    // Função que lê os valores digitados e transforma em vetor
+    function lerVetor() {
+      let valores = document.getElementById("vetor").value.split(",").map(Number); 
+      // split(",") → divide o texto em partes pelo separador vírgula
+      // map(Number) → transforma cada parte em número
+
+      // Se não tiver 10 números ou se algum for inválido, retorna null
+      if (valores.length !== 10 || valores.some(isNaN)) {
+        return null;
+      }
+      return valores; // retorna o vetor
+    }
+
+    // Função que imprime vetor na ordem original
+    function imprimirVetor(vetor) {
+      return vetor.join(", "); // junta os números separados por vírgula
+    }
+
+    // Função que imprime vetor na ordem inversa
+    function imprimirVetorReverso(vetor) {
+      return vetor.slice().reverse().join(", "); 
+      // slice() → cria cópia do vetor
+      // reverse() → inverte
+      // join(", ") → transforma em string
+    }
+
+    // Função principal do exercício 2
+    function exercicio2() {
+      let vetor = lerVetor(); // lê o vetor digitado
+      if (!vetor) {
+        document.getElementById("saida2").innerText = "Digite exatamente 10 números separados por vírgula!";
+        return;
+      }
+      // Cria saída com vetor original e invertido
+      let saida = "Vetor do início ao fim: " + imprimirVetor(vetor) + "\n";
+      saida += "Vetor do fim ao início: " + imprimirVetorReverso(vetor);
+
+      // Exibe no <pre id="saida2">
+      document.getElementById("saida2").innerText = saida;
+    }
+
+    // ================= EXERCÍCIO 3 =================
+
+    // Função que cria a matriz 3x3
+    function preencherMatriz() {
+      let valores = document.getElementById("matriz").value.split(",").map(Number);
+
+      // Valida se foram digitados exatamente 9 números
+      if (valores.length !== 9 || valores.some(isNaN)) {
+        return null;
+      }
+
+      let matriz = [];
+      // Divide os 9 números em 3 linhas de 3 colunas
+      for (let i = 0; i < 3; i++) {
+        matriz[i] = valores.slice(i * 3, (i + 1) * 3);
+        // Exemplo: i=0 → pega [0..2], i=1 → pega [3..5], i=2 → pega [6..8]
+      }
+      return matriz;
+    }
+
+    // Função que imprime a matriz no formato de linhas
+    function imprimirMatriz(m) {
+      return m.map(linha => linha.join(" ")).join("\n");
+      // junta os elementos de cada linha separados por espaço
+      // depois junta as linhas com quebra de linha
+    }
+
+    // Função que retorna os elementos da 2ª coluna (colunas pares → índice 1)
+    function imprimirColunasPares(m) {
+      let resultado = [];
+      for (let i = 0; i < 3; i++) {
+        resultado.push(m[i][1]); // sempre pega a coluna de índice 1
+      }
+      return resultado.join(", ");
+    }
+
+    // Função que retorna os elementos da 1ª linha (linhas ímpares → índice 0)
+    function imprimirLinhasImpares(m) {
+      let resultado = [];
+      for (let j = 0; j < 3; j++) {
+        resultado.push(m[0][j]); // pega os elementos da linha de índice 0
+      }
+      return resultado.join(", ");
+    }
+
+    // Função principal do exercício 3
+    function exercicio3() {
+      let matriz = preencherMatriz(); // cria a matriz
+      if (!matriz) {
+        document.getElementById("saida3").innerText = "Digite exatamente 9 números separados por vírgula!";
+        return;
+      }
+
+      // Cria a saída mostrando matriz, colunas pares e linhas ímpares
+      let saida = "Matriz:\n" + imprimirMatriz(matriz) + "\n\n";
+      saida += "Elementos das colunas pares: " + imprimirColunasPares(matriz) + "\n";
+      saida += "Elementos das linhas ímpares: " + imprimirLinhasImpares(matriz);
+
+      // Exibe no <pre id="saida3">
+      document.getElementById("saida3").innerText = saida;
+    }
+  </script>
+</body>
+</html>
